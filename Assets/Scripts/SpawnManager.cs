@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class SpawnManager : MonoBehaviour
+public class SpawnManager : NetworkBehaviour
 {
     public GameObject[] lilyPads;
 
-    // Start is called before the first frame update
-    void Start()
+    public override void OnNetworkSpawn()
     {
+        if (!IsServer)
+        {
+            return;
+        }
+
         InvokeRepeating("SpawnLilyPad", 2.0f, 2.0f);
     }
 
@@ -16,7 +21,8 @@ public class SpawnManager : MonoBehaviour
     {
         foreach (GameObject lilyPad in lilyPads)
         {
-            Instantiate(lilyPad);
+            NetworkObject lilyPadObject = Instantiate(lilyPad).GetComponent<NetworkObject>();
+            lilyPadObject.Spawn();
         }
     }
 }
