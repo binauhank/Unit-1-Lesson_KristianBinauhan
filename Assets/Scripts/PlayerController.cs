@@ -51,6 +51,15 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(transform.position, direction * 10);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, rbPlayer.velocity * 5);
+    }
+
     private void Move(Vector3 input)
     {
         rbPlayer.AddForce(input * forceMultiplier, forceMode);
@@ -80,6 +89,7 @@ public class PlayerController : NetworkBehaviour
         }
 
         rbPlayer.MovePosition(spawnPoints[index].transform.position);
+        rbPlayer.velocity = Vector3.zero;
     }
 
     void OnTriggerExit(Collider collider)
