@@ -166,4 +166,12 @@ public class Bot : MonoBehaviour
         }
         return false;
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Player") && collision.gameObject.GetComponent<NavPlayerMovement>().dead)
+        {
+            agent.isStopped = true;
+        }
+    }
 }
